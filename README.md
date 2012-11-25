@@ -15,7 +15,7 @@ Idea behind django-partners
 Installation
 ------------
 
-Add to ``INSTALLED_APPS``. Add ``partners.urls.py``. Make ``syncdb`` or use South.
+Add to ``INSTALLED_APPS``. Add ``partners.urls`` to global ``urls.py``. Make ``syncdb`` or use South.
 
 Integration
 -----------
