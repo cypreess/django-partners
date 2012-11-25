@@ -1,0 +1,42 @@
+<html>
+<body>
+<a href="{% url partner_accounts %}">Partner accounts</a> |
+{%  if previous_month %}
+    <a href="{% url partner_income year=previous_month|date:'Y' month=previous_month|date:'m' %}">Income {{ previous_month|date:'Y-m' }}</a>
+{% endif %}
+{%  if next_month %}
+<a href="{% url partner_income year=next_month|date:'Y' month=next_month|date:'m' %}">Income {{ next_month|date:'Y-m' }}</a>
+{% endif %}
+
+<h1>List of partner income in {{ month|date:"Y-m" }}</h1>
+
+
+<h2>Total:</h2>
+<ul>
+{% for t in total %}
+    <li> {{ t.total }} {{ t.currency }} </li>
+{% endfor %}
+</ul>
+<table border=1>
+    <tr>
+        <th></th>
+        <th>Account name</th>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Period</th>
+        <th>Description</th>
+    </tr>
+
+    {% for object in object_list %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ object.account }}</td>
+            <td>{{ object.created|date:'Y-m-d' }}</td>
+            <td>{{ object.amount }} {{ object.currency }}</td>
+            <td>{{ object.period|default_if_none:'-' }}{% if object.period %} days{% endif %}</td>
+            <td>{{ object.description }}</td>
+        </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
