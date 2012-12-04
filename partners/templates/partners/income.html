@@ -1,5 +1,8 @@
 <html>
 <body>
+<h1>List of partner income in {{ month|date:"Y-m" }}</h1>
+
+
 <a href="{% url partner_accounts %}">Partner accounts</a> |
 {%  if previous_month %}
     <a href="{% url partner_income year=previous_month|date:'Y' month=previous_month|date:'m' %}">Income {{ previous_month|date:'Y-m' }}</a>
@@ -8,13 +11,12 @@
 <a href="{% url partner_income year=next_month|date:'Y' month=next_month|date:'m' %}">Income {{ next_month|date:'Y-m' }}</a>
 {% endif %}
 
-<h1>List of partner income in {{ month|date:"Y-m" }}</h1>
 
 
 <h2>Total:</h2>
 <ul>
 {% for t in total %}
-    <li> {{ t.total }} {{ t.currency }} </li>
+    <li> {{ t.total }} {{ t.currency }} (including tax)</li>
 {% endfor %}
 </ul>
 <table border=1>

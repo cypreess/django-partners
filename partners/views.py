@@ -1,7 +1,8 @@
 # Create your views here.
+from django.core.urlresolvers import reverse
 from django.db.models import Sum
-from django.http import Http404
-from django.views.generic import ListView, MonthArchiveView
+from django.http import Http404, HttpResponseRedirect
+from django.views.generic import ListView, MonthArchiveView, TemplateView
 from partners.models import PartnerAccount, PartnerIncome, Partner
 
 class PartnerAccountsView(ListView):
@@ -33,3 +34,13 @@ class PartnerIncomeView(MonthArchiveView):
 
 
 
+class LastIncomeView(TemplateView):
+    template_name = "partners/no_income.html"
+
+    def get(self, request, *args, **kwargs):
+        try:
+            last_income = PartnerIncome.objects.filter(account__partner__user=self.request.user).order_by('-created')[0]
+            return HttpResponseRedirect(reverse('partner_income', kwargs={'year': last_income.created.strftime('%Y') , 'month': last_income.created.strftime('%m')}))
+        except IndexError:
+
+            return super(LastIncomeView, self).get(request, *args, **kwargs)
