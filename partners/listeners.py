@@ -15,6 +15,9 @@ def partner_income_listener(sender, user, amount, currency, description="", peri
             description = description,
             period = period,
         )
-        if period:
-            partner_account.days_left = partner_account.days_left - period
+        if period and not partner_account.days_left is None:
+            if partner_account.days_left - period > 0 :
+                partner_account.days_left = partner_account.days_left - period
+            else:
+                partner_account.days_left = 0
             partner_account.save()

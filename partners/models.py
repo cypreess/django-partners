@@ -18,7 +18,7 @@ class Partner(models.Model):
         """
         try:
             return cls.objects.get(user=user)
-        except cls.DoesNotExists:
+        except cls.DoesNotExist:
             return False
 
 

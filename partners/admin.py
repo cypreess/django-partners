@@ -22,7 +22,13 @@ class PartnerAccountAdmin(UserLinkMixin, admin.ModelAdmin):
 #    exclude = ('partner', 'user')
 
 class PartnerIncomeAdmin(admin.ModelAdmin):
-   list_display = ('partner', 'account', 'created', 'amount', 'currency', 'days_left')
+    def partner(self, obj):
+        return unicode(obj.account.partner)
+    list_display = ( 'account', 'partner', 'created', 'amount', 'currency')
+    readonly_fields = ('account', 'partner')
+    def queryset(self, request):
+        return super(PartnerIncomeAdmin, self).queryset(request).select_related()
+
 
 class PartnerAdmin(UserLinkMixin, admin.ModelAdmin):
     readonly_fields = ('user_link',)
@@ -30,5 +36,5 @@ class PartnerAdmin(UserLinkMixin, admin.ModelAdmin):
 
 admin.site.register(Partner, PartnerAdmin)
 admin.site.register(PartnerAccount, PartnerAccountAdmin)
-admin.site.register(PartnerIncome)#, PartnerIncomeAdmin)
+admin.site.register(PartnerIncome, PartnerIncomeAdmin)
 
